@@ -1,9 +1,11 @@
+"use client";
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "sonner";
-import { useSignOutMutation } from "../redux/features/auth/authApi";
-import { logout as clearCredentials } from "../redux/features/auth/authSlice";
+import { usePathname, useRouter } from "next/navigation";
+import { useSignOutMutation } from "../lib/redux/features/auth/authApi";
+import { logout as clearCredentials } from "../lib/redux/features/auth/authSlice";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -12,7 +14,7 @@ const NAV_LINKS = [
     label: "Services",
     href: "/services",
     dropdown: [
-      { label: "Moving Services", href: "/services/moving" },
+      { label: "Moving Services", href: "/services/moving" },+
       { label: "Cleaning Services", href: "/services/cleaning" },
       { label: "Laundry Services", href: "/services/laundry" },
       { label: "Home Repair", href: "/services/repair" },
@@ -23,29 +25,18 @@ const NAV_LINKS = [
 /* ── Logout Confirmation Modal ── */
 const LogoutModal = ({ onConfirm, onCancel, isLoading }) => (
   <div className="fixed inset-0 z-999 flex items-center justify-center px-4">
-    {/* Backdrop */}
     <div
       className="absolute inset-0 bg-black/40 backdrop-blur-sm"
       onClick={onCancel}
     />
-    {/* Card */}
     <div className="relative z-10 w-full max-w-sm bg-white rounded-3xl shadow-2xl p-8 flex flex-col items-center gap-6">
-      {/* Icon */}
       <div className="w-16 h-16 rounded-full bg-red-50 flex items-center justify-center">
-        <svg
-          width="32"
-          height="32"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="#EF4444"
-          strokeWidth="1.8"
-        >
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#EF4444" strokeWidth="1.8">
           <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
           <polyline points="16 17 21 12 16 7" />
           <line x1="21" y1="12" x2="9" y2="12" />
         </svg>
       </div>
-      {/* Text */}
       <div className="flex flex-col items-center gap-2 text-center">
         <h3 className="font-rethink text-[#0B1714] text-xl font-semibold leading-[140%]">
           Logging out?
@@ -55,7 +46,6 @@ const LogoutModal = ({ onConfirm, onCancel, isLoading }) => (
           in again to continue.
         </p>
       </div>
-      {/* Buttons */}
       <div className="flex gap-3 w-full">
         <button
           onClick={onCancel}
@@ -76,13 +66,11 @@ const LogoutModal = ({ onConfirm, onCancel, isLoading }) => (
 );
 
 export default function Navbar() {
-  const location = useLocation();
-  const navigate = useNavigate();
+  const pathname = usePathname();
+  const router = useRouter();
   const dispatch = useDispatch();
 
-  const { user, accessToken, refreshToken } = useSelector(
-    (state) => state.auth,
-  );
+  const { user, accessToken, refreshToken } = useSelector((state) => state.auth);
   const isLoggedIn = !!accessToken;
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -98,16 +86,13 @@ export default function Navbar() {
   const [signOut, { isLoading: isLoggingOut }] = useSignOutMutation();
 
   const isActive = (href) =>
-    location.pathname === href || location.pathname.startsWith(href + "/");
+    pathname === href || pathname.startsWith(href + "/");
 
   useEffect(() => {
     const handleClick = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target))
         setDropdownOpen(false);
-      if (
-        avatarDropdownRef.current &&
-        !avatarDropdownRef.current.contains(e.target)
-      )
+      if (avatarDropdownRef.current && !avatarDropdownRef.current.contains(e.target))
         setAvatarDropdownOpen(false);
     };
     document.addEventListener("mousedown", handleClick);
@@ -122,14 +107,12 @@ export default function Navbar() {
 
   // Close modal on route change
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setShowLogoutModal(false);
-  }, [location.pathname]);
+  }, [pathname]);
 
   const handleLogoutConfirm = async () => {
     try {
       if (refreshToken) await signOut({ refresh_token: refreshToken }).unwrap();
-      // eslint-disable-next-line no-unused-vars
     } catch (_) {
       /* empty */
     } finally {
@@ -138,7 +121,7 @@ export default function Navbar() {
       setAvatarDropdownOpen(false);
       setMobileMenuOpen(false);
       toast.success("Logged out successfully!");
-      navigate("/login");
+      router.push("/login");
     }
   };
 
@@ -150,7 +133,6 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Logout Modal */}
       {showLogoutModal && (
         <LogoutModal
           onConfirm={handleLogoutConfirm}
@@ -167,11 +149,10 @@ export default function Navbar() {
         <div className="mxw mx-2">
           <nav className="relative flex h-14 items-center px-4 md:px-6 bg-[#08203C]">
             {/* LEFT — Logo */}
-
             <div className="flex items-center shrink-0">
-              <a href="/" className="outline-none group">
+              <Link href="/" className="outline-none group">
                 <img
-                  src={logo}
+                  src="/images/logo.png"
                   alt="Logo"
                   className="h-12 md:h-24 w-auto object-contain transition-all duration-300"
                   onMouseEnter={(e) => {
@@ -182,7 +163,7 @@ export default function Navbar() {
                     e.currentTarget.style.filter = "brightness(1)";
                   }}
                 />
-              </a>
+              </Link>
             </div>
 
             {/* CENTER — Nav Links */}
@@ -205,9 +186,7 @@ export default function Navbar() {
                       <span
                         style={{
                           display: "inline-block",
-                          transform: dropdownOpen
-                            ? "rotate(180deg)"
-                            : "rotate(0deg)",
+                          transform: dropdownOpen ? "rotate(180deg)" : "rotate(0deg)",
                           transition: "transform 0.2s",
                           fontSize: "10px",
                           marginLeft: "2px",
@@ -225,10 +204,10 @@ export default function Navbar() {
                         {link.dropdown.map((item) => (
                           <Link
                             key={item.label}
-                            to={item.href}
+                            href={item.href}
                             onClick={() => setDropdownOpen(false)}
                             className={`block px-5 py-3 font-rethink text-sm no-underline transition-colors duration-150 ${
-                              location.pathname === item.href
+                              pathname === item.href
                                 ? "bg-[#08203C] text-white font-semibold"
                                 : "text-[#0B1714] hover:bg-[#f5f5f5]"
                             }`}
@@ -240,7 +219,7 @@ export default function Navbar() {
                     )}
                   </div>
                 ) : (
-                  <a
+                  <Link
                     key={link.label}
                     href={link.href}
                     className={`flex items-center gap-1.5 no-underline transition-colors duration-200 text-sm lg:text-base leading-[140%] font-rethink ${
@@ -253,7 +232,7 @@ export default function Navbar() {
                       <span className="inline-block w-1.5 h-1.5 rounded-full bg-white shrink-0" />
                     )}
                     {link.label}
-                  </a>
+                  </Link>
                 ),
               )}
             </div>
@@ -261,10 +240,7 @@ export default function Navbar() {
             {/* RIGHT */}
             <div className="flex items-center gap-3 ml-auto">
               {isLoggedIn ? (
-                <div
-                  ref={avatarDropdownRef}
-                  className="relative hidden md:block"
-                >
+                <div ref={avatarDropdownRef} className="relative hidden md:block">
                   <button
                     onClick={() => setAvatarDropdownOpen(!avatarDropdownOpen)}
                     className="flex items-center gap-2 cursor-pointer bg-transparent border-none p-0"
@@ -296,18 +272,11 @@ export default function Navbar() {
                         </p>
                       </div>
                       <Link
-                        to="/profile"
+                        href="/dashboard/profile"
                         onClick={() => setAvatarDropdownOpen(false)}
                         className="flex items-center gap-2 px-5 py-3 font-rethink text-sm text-[#0B1714] no-underline hover:bg-[#f5f5f5] transition-colors duration-150"
                       >
-                        <svg
-                          width="15"
-                          height="15"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.8"
-                        >
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
                           <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                           <circle cx="12" cy="7" r="4" />
                         </svg>
@@ -320,14 +289,7 @@ export default function Navbar() {
                         }}
                         className="w-full flex items-center gap-2 px-5 py-3 font-rethink text-sm text-red-500 hover:bg-red-50 transition-colors duration-150 bg-transparent border-none cursor-pointer"
                       >
-                        <svg
-                          width="15"
-                          height="15"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.8"
-                        >
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
                           <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
                           <polyline points="16 17 21 12 16 7" />
                           <line x1="21" y1="12" x2="9" y2="12" />
@@ -338,23 +300,23 @@ export default function Navbar() {
                   )}
                 </div>
               ) : (
-                <a
+                <Link
                   href="/login"
                   className="font-rethink hidden md:inline-flex items-center px-7 py-3 rounded-3xl border bg-white text-[#08203C] text-sm font-semibold leading-[140%] no-underline transition-all duration-300 ease-in-out hover:scale-105 shadow-md hover:shadow-xl shrink-0"
                 >
                   Login
-                </a>
+                </Link>
               )}
 
               {/* Contact Us */}
               <Link
-                to="/contact"
+                href="/contact"
                 className="group hidden md:inline-flex items-center rounded-3xl bg-white cursor-pointer transition-all duration-300 ease-in-out hover:scale-105 shadow-md hover:shadow-xl shrink-0 pl-5 pr-2 py-2"
               >
                 <span className="font-rethink text-[#08203C] text-sm font-semibold leading-[140%]">
                   Contact Us
                 </span>
-                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-[#08203C] text-white text-base  ml-2 ">
+                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-[#08203C] text-white text-base ml-2">
                   →
                 </span>
               </Link>
@@ -364,15 +326,9 @@ export default function Navbar() {
                 className="md:hidden flex flex-col gap-1.5 cursor-pointer bg-transparent border-none p-1"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               >
-                <span
-                  className={`block w-6 h-0.5 bg-white transition-all duration-300 ${mobileMenuOpen ? "rotate-45 translate-y-2" : ""}`}
-                />
-                <span
-                  className={`block w-6 h-0.5 bg-white transition-all duration-300 ${mobileMenuOpen ? "opacity-0" : ""}`}
-                />
-                <span
-                  className={`block w-6 h-0.5 bg-white transition-all duration-300 ${mobileMenuOpen ? "-rotate-45 -translate-y-2" : ""}`}
-                />
+                <span className={`block w-6 h-0.5 bg-white transition-all duration-300 ${mobileMenuOpen ? "rotate-45 translate-y-2" : ""}`} />
+                <span className={`block w-6 h-0.5 bg-white transition-all duration-300 ${mobileMenuOpen ? "opacity-0" : ""}`} />
+                <span className={`block w-6 h-0.5 bg-white transition-all duration-300 ${mobileMenuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
               </button>
             </div>
           </nav>
@@ -385,9 +341,7 @@ export default function Navbar() {
                   link.dropdown ? (
                     <div key={link.label}>
                       <button
-                        onClick={() =>
-                          setMobileServicesOpen(!mobileServicesOpen)
-                        }
+                        onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
                         className={`w-full flex items-center justify-between no-underline transition-colors duration-200 py-2.5 px-3 rounded-xl text-sm leading-[140%] font-rethink bg-transparent border-none cursor-pointer ${
                           isActive(link.href)
                             ? "text-white font-semibold bg-white/10"
@@ -400,15 +354,7 @@ export default function Navbar() {
                           )}
                           {link.label}
                         </span>
-                        <span
-                          style={{
-                            transform: mobileServicesOpen
-                              ? "rotate(180deg)"
-                              : "rotate(0deg)",
-                            transition: "transform 0.2s",
-                            fontSize: "10px",
-                          }}
-                        >
+                        <span style={{ transform: mobileServicesOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s", fontSize: "10px" }}>
                           ▾
                         </span>
                       </button>
@@ -418,13 +364,13 @@ export default function Navbar() {
                           {link.dropdown.map((item) => (
                             <Link
                               key={item.label}
-                              to={item.href}
+                              href={item.href}
                               onClick={() => {
                                 setMobileMenuOpen(false);
                                 setMobileServicesOpen(false);
                               }}
                               className={`block py-2 px-3 rounded-xl font-rethink text-sm no-underline transition-colors duration-150 ${
-                                location.pathname === item.href
+                                pathname === item.href
                                   ? "text-white font-semibold bg-white/10"
                                   : "text-[#8899b8] hover:text-white hover:bg-white/5"
                               }`}
@@ -436,7 +382,7 @@ export default function Navbar() {
                       )}
                     </div>
                   ) : (
-                    <a
+                    <Link
                       key={link.label}
                       href={link.href}
                       onClick={() => setMobileMenuOpen(false)}
@@ -450,36 +396,27 @@ export default function Navbar() {
                         <span className="inline-block w-1.5 h-1.5 rounded-full bg-white shrink-0" />
                       )}
                       {link.label}
-                    </a>
+                    </Link>
                   ),
                 )}
 
-                {/* Mobile — logged in */}
                 {isLoggedIn ? (
                   <>
                     <div className="flex items-center gap-3 mt-2 px-3 py-2.5">
                       {user?.avatar ? (
-                        <img
-                          src={user.avatar}
-                          alt="avatar"
-                          className="w-9 h-9 rounded-full object-cover border-2 border-white/30"
-                        />
+                        <img src={user.avatar} alt="avatar" className="w-9 h-9 rounded-full object-cover border-2 border-white/30" />
                       ) : (
                         <div className="w-9 h-9 rounded-full bg-white text-[#08203C] font-semibold text-sm grid place-items-center">
                           {getInitial()}
                         </div>
                       )}
                       <div className="flex flex-col min-w-0">
-                        <span className="font-rethink text-white text-sm font-semibold truncate">
-                          {user?.full_name || "User"}
-                        </span>
-                        <span className="font-rethink text-[#8899b8] text-xs truncate">
-                          {user?.email || ""}
-                        </span>
+                        <span className="font-rethink text-white text-sm font-semibold truncate">{user?.full_name || "User"}</span>
+                        <span className="font-rethink text-[#8899b8] text-xs truncate">{user?.email || ""}</span>
                       </div>
                     </div>
                     <Link
-                      to="/profile"
+                      href="/dashboard/profile"
                       onClick={() => setMobileMenuOpen(false)}
                       className="font-rethink w-full flex items-center justify-center rounded-2xl border border-white/30 text-white hover:bg-white/10 transition-all duration-200 py-2.5 text-sm font-semibold no-underline"
                     >
@@ -496,23 +433,22 @@ export default function Navbar() {
                     </button>
                   </>
                 ) : (
-                  <a
+                  <Link
                     href="/login"
                     onClick={() => setMobileMenuOpen(false)}
                     className="font-rethink w-full flex items-center justify-center rounded-2xl border border-white/30 text-white hover:bg-white/10 transition-all duration-200 mt-2 py-2.5 text-sm font-semibold no-underline"
                   >
                     Login
-                  </a>
+                  </Link>
                 )}
 
-                {/* Mobile Contact Us */}
-                <a
+                <Link
                   href="/contact"
                   onClick={() => setMobileMenuOpen(false)}
                   className="font-rethink w-full flex items-center justify-center rounded-2xl bg-white hover:opacity-90 transition-opacity mt-2 py-2.5 text-[#08203C] text-sm font-semibold no-underline"
                 >
                   Contact Us →
-                </a>
+                </Link>
               </div>
             </div>
           )}

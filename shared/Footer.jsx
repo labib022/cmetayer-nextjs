@@ -1,18 +1,16 @@
+"use client";
 import { useState } from "react";
 import Link from "next/link";
-import {
-  useGetAboutSystemQuery,
-  useContactUsMutation,
-} from "../redux/features/cms/cmsApi";
+import { useGetAboutSystemQuery, useContactUsMutation } from "../lib/redux/features/cms/cmsApi";
 
 const QUICK_LINKS = [
-  { label: "About", to: "/about" },
-  { label: "Services", to: "services/moving" },
+  { label: "About", href: "/about" },
+  { label: "Services", href: "/services/moving" },
 ];
 
 const LEGAL_LINKS = [
-  { label: "Privacy Policy", to: "/privacy-policy" },
-  { label: "Terms & Conditions", to: "/terms-and-conditions" },
+  { label: "Privacy Policy", href: "/privacy-policy" },
+  { label: "Terms & Conditions", href: "/terms-and-conditions" },
 ];
 
 export default function Footer() {
@@ -20,7 +18,6 @@ export default function Footer() {
   const [emailSent, setEmailSent] = useState(false);
   const [emailError, setEmailError] = useState("");
   const { data } = useGetAboutSystemQuery();
-  // eslint-disable-next-line no-unused-vars
   const [contactUs, { isLoading: emailLoading }] = useContactUsMutation();
 
   const system = data?.data?.about_system;
@@ -32,10 +29,7 @@ export default function Footer() {
   const emailAddr = system?.email || "hello@cleanzy.ca";
   const phone = system?.phone || "+1 (416) 555-0198";
   const copyright = system?.copyright || "©2026 EASY LIFT AND CLEAN";
-  const baseUrl = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "").replace(
-    "/api",
-    "",
-  );
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "").replace("/api", "");
 
   return (
     <footer className="w-full px-2 pb-2 pt-14 bg-transparent">
@@ -53,13 +47,11 @@ export default function Footer() {
                   Stay Updated with
                 </h3>
                 <Link
-                  to="/"
-                  onClick={() =>
-                    window.scrollTo({ top: 0, behavior: "smooth" })
-                  }
+                  href="/"
+                  onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
                 >
                   <img
-                    src={logo}
+                    src="/images/logo.png"
                     alt="Logo"
                     className="w-34 md:w-55 object-contain cursor-pointer"
                   />
@@ -70,16 +62,12 @@ export default function Footer() {
                 className="text-[#E0E0E0] text-base font-bold leading-[140%] m-0"
                 style={{ fontFamily: '"Rethink Sans", sans-serif' }}
               >
-                Get cleaning tips, special offers, and updates delivered to your
-                inbox.
+                Get cleaning tips, special offers, and updates delivered to your inbox.
               </p>
 
               <div
                 className="flex items-center justify-between w-full rounded-full"
-                style={{
-                  background: "rgba(255,255,255,0.16)",
-                  padding: "4px 4px 4px 24px",
-                }}
+                style={{ background: "rgba(255,255,255,0.16)", padding: "4px 4px 4px 24px" }}
               >
                 <input
                   type="email"
@@ -133,18 +121,12 @@ export default function Footer() {
                 </button>
               </div>
               {emailSent && (
-                <p
-                  className="text-green-400 text-xs mt-1"
-                  style={{ fontFamily: '"Rethink Sans", sans-serif' }}
-                >
+                <p className="text-green-400 text-xs mt-1" style={{ fontFamily: '"Rethink Sans", sans-serif' }}>
                   ✅ Subscribed successfully!
                 </p>
               )}
               {emailError && (
-                <p
-                  className="text-red-400 text-xs mt-1"
-                  style={{ fontFamily: '"Rethink Sans", sans-serif' }}
-                >
+                <p className="text-red-400 text-xs mt-1" style={{ fontFamily: '"Rethink Sans", sans-serif' }}>
                   {emailError}
                 </p>
               )}
@@ -163,10 +145,8 @@ export default function Footer() {
                   {QUICK_LINKS.map((link) => (
                     <Link
                       key={link.label}
-                      to={link.to}
-                      onClick={() =>
-                        window.scrollTo({ top: 0, behavior: "smooth" })
-                      }
+                      href={link.href}
+                      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
                       className="text-[#E0E0E0] text-sm no-underline hover:text-white transition-colors duration-200"
                       style={{ fontFamily: '"Rethink Sans", sans-serif' }}
                     >
@@ -187,10 +167,8 @@ export default function Footer() {
                   {LEGAL_LINKS.map((link) => (
                     <Link
                       key={link.label}
-                      to={link.to}
-                      onClick={() =>
-                        window.scrollTo({ top: 0, behavior: "smooth" })
-                      }
+                      href={link.href}
+                      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
                       className="text-[#E0E0E0] text-sm no-underline hover:text-white transition-colors duration-200"
                       style={{ fontFamily: '"Rethink Sans", sans-serif' }}
                     >
@@ -208,38 +186,23 @@ export default function Footer() {
           <div className="w-full bg-white rounded-2xl p-8 sm:p-10 lg:p-12 flex flex-col sm:flex-row flex-wrap gap-10 sm:gap-12">
             {/* Location */}
             <div className="flex flex-col gap-2 flex-1 min-w-45">
-              <p
-                className="text-[#444] text-base font-bold leading-[140%] m-0"
-                style={{ fontFamily: '"Rethink Sans", sans-serif' }}
-              >
+              <p className="text-[#444] text-base font-bold leading-[140%] m-0" style={{ fontFamily: '"Rethink Sans", sans-serif' }}>
                 Our Location
               </p>
-              <p
-                className="text-[#111] text-lg sm:text-xl font-medium leading-[140%] m-0"
-                style={{
-                  fontFamily: '"Rethink Sans", sans-serif',
-                  letterSpacing: "-0.78px",
-                }}
-              >
+              <p className="text-[#111] text-lg sm:text-xl font-medium leading-[140%] m-0" style={{ fontFamily: '"Rethink Sans", sans-serif', letterSpacing: "-0.78px" }}>
                 {location}
               </p>
             </div>
 
             {/* Email */}
             <div className="flex flex-col gap-2 flex-1 min-w-40">
-              <p
-                className="text-[#444] text-base font-bold leading-[140%] m-0"
-                style={{ fontFamily: '"Rethink Sans", sans-serif' }}
-              >
+              <p className="text-[#444] text-base font-bold leading-[140%] m-0" style={{ fontFamily: '"Rethink Sans", sans-serif' }}>
                 Email
               </p>
               <a
                 href={`mailto:${emailAddr}`}
                 className="text-[#111] text-lg sm:text-xl font-medium leading-[140%] no-underline hover:opacity-70 transition-opacity"
-                style={{
-                  fontFamily: '"Rethink Sans", sans-serif',
-                  letterSpacing: "-0.78px",
-                }}
+                style={{ fontFamily: '"Rethink Sans", sans-serif', letterSpacing: "-0.78px" }}
               >
                 {emailAddr}
               </a>
@@ -247,30 +210,21 @@ export default function Footer() {
 
             {/* Phone */}
             <div className="flex flex-col gap-2 flex-1 min-w-40">
-              <p
-                className="text-[#444] text-base font-bold leading-[140%] m-0"
-                style={{ fontFamily: '"Rethink Sans", sans-serif' }}
-              >
+              <p className="text-[#444] text-base font-bold leading-[140%] m-0" style={{ fontFamily: '"Rethink Sans", sans-serif' }}>
                 Phone
               </p>
               <a
                 href={`tel:${phone}`}
                 className="text-[#111] text-lg sm:text-xl font-medium leading-[140%] no-underline hover:opacity-70 transition-opacity"
-                style={{
-                  fontFamily: '"Rethink Sans", sans-serif',
-                  letterSpacing: "-0.78px",
-                }}
+                style={{ fontFamily: '"Rethink Sans", sans-serif', letterSpacing: "-0.78px" }}
               >
                 {phone}
               </a>
             </div>
 
-            {/* Social Media — API থেকে */}
+            {/* Social Media */}
             <div className="flex flex-col gap-2 flex-1 min-w-40">
-              <p
-                className="text-[#444] text-base font-bold leading-[140%] m-0"
-                style={{ fontFamily: '"Rethink Sans", sans-serif' }}
-              >
+              <p className="text-[#444] text-base font-bold leading-[140%] m-0" style={{ fontFamily: '"Rethink Sans", sans-serif' }}>
                 Social Media
               </p>
               <div className="flex flex-wrap gap-2">
@@ -285,11 +239,7 @@ export default function Footer() {
                   >
                     {s.icon && (
                       <img
-                        src={
-                          s.icon.startsWith("/media")
-                            ? `${baseUrl}${s.icon}`
-                            : s.icon
-                        }
+                        src={s.icon.startsWith("/media") ? `${baseUrl}${s.icon}` : s.icon}
                         alt={s.name}
                         className="w-4 h-4 object-contain"
                       />
