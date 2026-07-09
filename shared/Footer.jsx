@@ -1,5 +1,4 @@
 import { useState } from "react";
-import logo from "/navImg.svg";
 import Link from "next/link";
 import {
   useGetAboutSystemQuery,

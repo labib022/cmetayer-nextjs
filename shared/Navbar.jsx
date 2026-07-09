@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "sonner";
-import logo from "/navImg.svg";
 import { useSignOutMutation } from "../redux/features/auth/authApi";
 import { logout as clearCredentials } from "../redux/features/auth/authSlice";
 
