@@ -1,12 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import aboutImg from "../../../assets/images/about-foundation.png";
-import { useGetAboutUsPageQuery } from "../../../redux/features/cms/cmsApi";
+import { useGetAboutUsPageQuery } from "../../../lib/redux/features/cms/cmsApi";
 
-// Next.js static image imports return an object ({ src, width, height, ... })
-// instead of a plain string path, so we pull out `.src` up front.
-const aboutImgSrc = aboutImg.src;
+const fallbackImg = "/images/about-foundation.png";
 
 export default function OurFoundation() {
   const [isHovered, setIsHovered] = useState(false);
@@ -15,7 +12,7 @@ export default function OurFoundation() {
   const section = data?.data?.about_us?.settings?.[0] || {};
 
   const title = section.foundation_title || "Our Foundation";
-  const description = section.foundation_description || "...";
+  const description = section.foundation_description || "A mission-driven cleaning company focused on trust, reliability, and care.";
   const basedIn = section.based_in || "Indonesia";
   const founded = section.founded || "2017";
   const workingHours = section.working_hours || "Monday – Saturday, 08.00 AM – 06.00 PM";
@@ -23,7 +20,7 @@ export default function OurFoundation() {
   const visionDesc = section.vision_description || "To redefine home care through exceptional service and genuine care.";
   const missionTitle = section.mission_title || "Our Mission";
   const missionDesc = section.mission_description || "To deliver consistent, high-quality cleaning services that improve our clients' daily lives while upholding environmental responsibility.";
-  const image = section.image || aboutImgSrc;
+  const image = section.image || fallbackImg;
 
   const INFO_CARDS = [
     { label: "Based In", value: basedIn },
@@ -103,7 +100,10 @@ export default function OurFoundation() {
             src={image}
             alt="Our Foundation"
             className="w-full h-full object-cover object-center"
-            style={{ transition: "transform 700ms ease-in-out", transform: isHovered ? "scale(1.02)" : "scale(1)" }}
+            style={{
+              transition: "transform 700ms ease-in-out",
+              transform: isHovered ? "scale(1.02)" : "scale(1)",
+            }}
           />
         </div>
 
