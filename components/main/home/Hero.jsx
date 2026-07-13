@@ -84,8 +84,15 @@ export default function Hero() {
   const active = services[displayed] || services[0];
 
   return (
-    <section className="w-full px-4 sm:px-8 lg:px-16 pt-12 pb-16 rounded-b-3xl" style={{ backgroundColor: "#08203C" }}>
-      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
+    // ✅ FIX: outer <section> এ আগে "w-full mx-2" ছিল — এটাই horizontal
+    // overflow bug-টার কারণ ছিল। "w-full" (width:100%) + fixed "mx-2" margin
+    // একসাথে থাকলে মোট width = 100% + 16px (দুই পাশের margin) হয়ে যায়, যেটা
+    // parent-এর width-কে ছাড়িয়ে ডানদিকে overflow করে (আর পুরো page-এ horizontal
+    // scrollbar চলে আসে)। "w-full" বাদ দিলে <section> স্বাভাবিক block-level auto
+    // width নেয়, যেটা margin-এর জন্য জায়গা রেখেই সাইজ হয় — ঠিক Navbar-এর outer
+    // wrapper-এর মতোই আচরণ করে।
+    <section className="mx-2 pt-12 pb-16 rounded-b-3xl" style={{ backgroundColor: "#08203C" }}>
+      <div className="mxw flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
 
         {/* LEFT */}
         <div className="flex flex-col justify-center gap-6 w-full lg:w-1/2">

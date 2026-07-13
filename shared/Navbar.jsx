@@ -14,7 +14,7 @@ const NAV_LINKS = [
     label: "Services",
     href: "/services",
     dropdown: [
-      { label: "Moving Services", href: "/services/moving" },+
+      { label: "Moving Services", href: "/services/moving" },
       { label: "Cleaning Services", href: "/services/cleaning" },
       { label: "Laundry Services", href: "/services/laundry" },
       { label: "Home Repair", href: "/services/repair" },
@@ -146,7 +146,7 @@ export default function Navbar() {
           scrolled ? "" : "mt-2 mx-2 rounded-t-3xl"
         }`}
       >
-        <div className="mxw mx-2">
+        <div className="mxw">
           <nav className="relative flex h-14 items-center px-4 md:px-6 bg-[#08203C]">
             {/* LEFT — Logo */}
             <div className="flex items-center shrink-0">

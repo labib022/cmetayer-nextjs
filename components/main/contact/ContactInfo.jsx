@@ -1,7 +1,7 @@
 "use client";
 
 import { MdPhone, MdEmail, MdLocationOn, MdAccessTime } from "react-icons/md";
-import { useGetAboutSystemQuery } from "../../../redux/features/cms/cmsApi";
+import { useGetAboutSystemQuery } from "../../../lib/redux/features/cms/cmsApi";
 
 export default function ContactInfo() {
   const { data, isLoading, isError } = useGetAboutSystemQuery();

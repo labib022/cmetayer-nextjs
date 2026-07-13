@@ -1,13 +1,21 @@
-import Link from 'next/link';
+import MovingHero from "../../../components/main/services/moving/MovingHero";
+import MovingDescription from "../../../components/main/services/moving/MovingDescription";
+import OurMovingServices from "../../../components/main/services/moving/OurMovingServices";
+import Clients from "../../../components/main/home/Clients";
+import Faq from "../../../components/main/home/Faq";
+
+export const metadata = {
+  title: "Moving Services",
+};
 
 export default function MovingPage() {
   return (
-    <div className="page">
-      <section className="section-card">
-        <h1>Moving Services</h1>
-        <p>Plan your move with professional support for packing, loading, transport, and setup.</p>
-        <Link href="/services/moving/book" className="btn btn-primary">Book moving service</Link>
-      </section>
-    </div>
+    <>
+      <MovingHero />
+      <MovingDescription />
+      <OurMovingServices />
+      <Clients />
+      <Faq />
+    </>
   );
 }

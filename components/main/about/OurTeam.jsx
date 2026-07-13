@@ -1,24 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import teamImg1 from "../../../assets/images/team-member-1.png";
-import teamImg2 from "../../../assets/images/team-member-2.png";
-import teamImg3 from "../../../assets/images/team-member-3.png";
-import teamImg4 from "../../../assets/images/team-member-4.png";
-import { useGetAboutUsPageQuery } from "../../../redux/features/cms/cmsApi";
+// ✅ redux path fix: redux/ → lib/redux/
+import { useGetAboutUsPageQuery } from "../../../lib/redux/features/cms/cmsApi";
 
-// Next.js static image imports return an object ({ src, width, height, ... })
-// instead of a plain string path, so we pull out `.src` up front.
-const teamImg1Src = teamImg1.src;
-const teamImg2Src = teamImg2.src;
-const teamImg3Src = teamImg3.src;
-const teamImg4Src = teamImg4.src;
-
+// ✅ assets/ import বাদ — public/ folder এর সরাসরি path
 const FALLBACK_TEAM = [
-  { name: "Olivia Brooks", role: "Client Service Manager", img: teamImg1Src, bgPos: "center" },
-  { name: "Emily Walker", role: "Home Repair Expert", img: teamImg2Src, bgPos: "center" },
-  { name: "Liam Thompson", role: "General Maintenance Technician", img: teamImg3Src, bgPos: "center" },
-  { name: "Aisha Rahman", role: "Home Cleaning Supervisor", img: teamImg4Src, bgPos: "top center" },
+  { name: "Olivia Brooks",   role: "Client Service Manager",          img: "/images/team-member-1.png", bgPos: "center" },
+  { name: "Emily Walker",    role: "Home Repair Expert",              img: "/images/team-member-2.png", bgPos: "center" },
+  { name: "Liam Thompson",   role: "General Maintenance Technician",  img: "/images/team-member-3.png", bgPos: "center" },
+  { name: "Aisha Rahman",    role: "Home Cleaning Supervisor",        img: "/images/team-member-4.png", bgPos: "top center" },
 ];
 
 const TeamCard = ({ member }) => {
@@ -27,7 +18,7 @@ const TeamCard = ({ member }) => {
   return (
     <div
       className="shrink-0 flex flex-col items-center gap-4 cursor-pointer transition-all duration-300"
-      style={{ width: "280px", borderRadius: "24px", padding: "16px", backgroundColor: hovered ?"#08203C" : "#FAFAFA"}}
+      style={{ width: "280px", borderRadius: "24px", padding: "16px", backgroundColor: hovered ? "#08203C" : "#FAFAFA" }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -61,19 +52,18 @@ const TeamCard = ({ member }) => {
 export default function OurTeam() {
   const { data } = useGetAboutUsPageQuery();
 
-  // API response: data.about_us.team_members
   const apiTeam = data?.data?.about_us?.team_members;
   const TEAM = apiTeam?.length
     ? apiTeam.map((m, i) => ({
-        name: m.name,
-        role: m.position,
-        img: m.image || m.avatar || FALLBACK_TEAM[i % FALLBACK_TEAM.length].img,
+        name:  m.name,
+        role:  m.position,
+        img:   m.image || m.avatar || FALLBACK_TEAM[i % FALLBACK_TEAM.length].img,
         bgPos: m.bg_position || "center",
       }))
     : FALLBACK_TEAM;
 
   const sectionTitle = "Meet the The Easy Lift & Clean Team";
-  const sectionDesc = "A dedicated team of professionals working together to deliver reliable and thoughtful home cleaning services.";
+  const sectionDesc  = "A dedicated team of professionals working together to deliver reliable and thoughtful home cleaning services.";
 
   const LOOPED_TEAM = [...TEAM, ...TEAM];
 
@@ -90,9 +80,7 @@ export default function OurTeam() {
           width: max-content;
           animation: teamMarquee 10s linear infinite;
         }
-        .team-track:hover {
-          animation-play-state: paused;
-        }
+        .team-track:hover { animation-play-state: paused; }
       `}</style>
 
       {/* HEADER */}
