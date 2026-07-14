@@ -179,9 +179,6 @@ export default function Navbar() {
                           : "text-[#8899b8] font-normal"
                       }`}
                     >
-                      {isActive(link.href) && (
-                        <span className="inline-block w-1.5 h-1.5 rounded-full bg-white shrink-0" />
-                      )}
                       {link.label}
                       <span
                         style={{
@@ -228,9 +225,6 @@ export default function Navbar() {
                         : "text-[#8899b8] font-normal"
                     }`}
                   >
-                    {isActive(link.href) && (
-                      <span className="inline-block w-1.5 h-1.5 rounded-full bg-white shrink-0" />
-                    )}
                     {link.label}
                   </Link>
                 ),
@@ -349,9 +343,6 @@ export default function Navbar() {
                         }`}
                       >
                         <span className="flex items-center gap-1.5">
-                          {isActive(link.href) && (
-                            <span className="inline-block w-1.5 h-1.5 rounded-full bg-white shrink-0" />
-                          )}
                           {link.label}
                         </span>
                         <span style={{ transform: mobileServicesOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s", fontSize: "10px" }}>
@@ -392,9 +383,6 @@ export default function Navbar() {
                           : "text-[#8899b8] font-normal hover:text-white hover:bg-white/5"
                       }`}
                     >
-                      {isActive(link.href) && (
-                        <span className="inline-block w-1.5 h-1.5 rounded-full bg-white shrink-0" />
-                      )}
                       {link.label}
                     </Link>
                   ),

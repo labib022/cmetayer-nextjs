@@ -86,7 +86,7 @@ export default function LaundryAboutUs() {
 
               {/* Book Now Button */}
               <Link
-                href="/services/laundry/laundry-booking/step-1"
+                href="/services/laundry/book/step-1"
                 className="flex items-center justify-between cursor-pointer hover:opacity-90 transition-opacity duration-200 no-underline w-full sm:flex-1 sm:max-w-45 pl-6 pr-2 py-2 rounded-3xl bg-[#08203C]"
               >
                 <span className="font-rethink text-white font-semibold text-base leading-[140%]">
