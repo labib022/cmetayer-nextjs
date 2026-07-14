@@ -1,13 +1,21 @@
-import Link from 'next/link';
+import CleaningHero from "../../../components/main/services/cleaning/CleaningHero";
+import CleaningAboutUs from "../../../components/main/services/cleaning/CleaningAboutUs";
+import OurCleaningServices from "../../../components/main/services/cleaning/OurCleaningServices";
+import Clients from "../../../components/main/home/Clients";
+import Faq from "../../../components/main/home/Faq";
+
+export const metadata = {
+  title: "Cleaning Services",
+};
 
 export default function CleaningPage() {
   return (
-    <div className="page">
-      <section className="section-card">
-        <h1>Cleaning Services</h1>
-        <p>Keep your home or office spotless with recurring or one-time cleaning appointments.</p>
-        <Link href="/services/cleaning/book" className="btn btn-primary">Book cleaning service</Link>
-      </section>
-    </div>
+    <>
+      <CleaningHero />
+      <CleaningAboutUs />
+      <OurCleaningServices />
+      <Clients />
+      <Faq />
+    </>
   );
 }
