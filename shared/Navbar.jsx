@@ -73,6 +73,7 @@ export default function Navbar() {
   const { user, accessToken, refreshToken } = useSelector((state) => state.auth);
   const isLoggedIn = !!accessToken;
 
+  const [mounted, setMounted] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
@@ -87,6 +88,10 @@ export default function Navbar() {
 
   const isActive = (href) =>
     pathname === href || pathname.startsWith(href + "/");
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const handleClick = (e) => {
@@ -233,7 +238,7 @@ export default function Navbar() {
 
             {/* RIGHT */}
             <div className="flex items-center gap-3 ml-auto">
-              {isLoggedIn ? (
+              {mounted && isLoggedIn ? (
                 <div ref={avatarDropdownRef} className="relative hidden md:block">
                   <button
                     onClick={() => setAvatarDropdownOpen(!avatarDropdownOpen)}
@@ -293,13 +298,15 @@ export default function Navbar() {
                     </div>
                   )}
                 </div>
-              ) : (
+              ) : mounted ? (
                 <Link
                   href="/login"
                   className="font-rethink hidden md:inline-flex items-center px-7 py-3 rounded-3xl border bg-white text-[#08203C] text-sm font-semibold leading-[140%] no-underline transition-all duration-300 ease-in-out hover:scale-105 shadow-md hover:shadow-xl shrink-0"
                 >
                   Login
                 </Link>
+              ) : (
+                <div className="hidden md:block w-10 h-10" />
               )}
 
               {/* Contact Us */}
@@ -388,7 +395,7 @@ export default function Navbar() {
                   ),
                 )}
 
-                {isLoggedIn ? (
+                {mounted && isLoggedIn ? (
                   <>
                     <div className="flex items-center gap-3 mt-2 px-3 py-2.5">
                       {user?.avatar ? (
@@ -420,7 +427,7 @@ export default function Navbar() {
                       Logout
                     </button>
                   </>
-                ) : (
+                ) : mounted ? (
                   <Link
                     href="/login"
                     onClick={() => setMobileMenuOpen(false)}
@@ -428,7 +435,7 @@ export default function Navbar() {
                   >
                     Login
                   </Link>
-                )}
+                ) : null}
 
                 <Link
                   href="/contact"
