@@ -6,6 +6,7 @@ import Faq from "../../../components/main/home/Faq";
 
 export const metadata = {
   title: "Moving Services",
+  description: "Reliable, fully-insured moving services — local and long-distance. Book your move online in minutes.",
 };
 
 export default function MovingPage() {

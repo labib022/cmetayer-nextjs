@@ -6,6 +6,7 @@ import Faq from "../../../components/main/home/Faq";
 
 export const metadata = {
   title: "Cleaning Services",
+  description: "Professional home and office cleaning services, tailored to your schedule. Book online in minutes.",
 };
 
 export default function CleaningPage() {

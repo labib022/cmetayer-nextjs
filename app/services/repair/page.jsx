@@ -6,6 +6,7 @@ import Faq from "../../../components/main/home/Faq";
 
 export const metadata = {
   title: "Home Repair Services",
+  description: "Trusted home repair and maintenance — plumbing, electrical, furniture assembly and more. Request a quote online.",
 };
 
 export default function RepairPage() {

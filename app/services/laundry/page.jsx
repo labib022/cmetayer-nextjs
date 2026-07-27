@@ -6,6 +6,7 @@ import Faq from "../../../components/main/home/Faq";
 
 export const metadata = {
   title: "Laundry Services",
+  description: "Convenient pickup-and-delivery laundry services. Book online and get your laundry done hassle-free.",
 };
 
 export default function LaundryPage() {
@@ -18,4 +19,4 @@ export default function LaundryPage() {
       <Faq />
     </>
   );
-} 
+}

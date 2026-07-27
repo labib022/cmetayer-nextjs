@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetLegalQuery } from "../../lib/redux/features/cms/cmsApi";
+import { useGetLegalQuery } from "../lib/redux/features/cms/cmsApi";
 
 export default function PrivacyPolicyPage() {
   const { data, isLoading } = useGetLegalQuery("privacy");
@@ -21,7 +21,9 @@ export default function PrivacyPolicyPage() {
       {/* Content */}
       <div className="w-full flex flex-col items-center">
         <div className="w-[90%] max-w-275 mt-12 md:mt-20 pb-20">
-          <style>{`
+          <style
+            dangerouslySetInnerHTML={{
+              __html: `
             .cms-rich-content p {
               font-size: 16px;
               line-height: 1.75;
@@ -64,7 +66,9 @@ export default function PrivacyPolicyPage() {
             @media (min-width: 1024px) {
               .cms-rich-content p, .cms-rich-content ul li { font-size: 20px; }
             }
-          `}</style>
+          `,
+            }}
+          />
           {isLoading ? (
             <div className="flex flex-col gap-4 animate-pulse">
               {[1, 2, 3, 4].map((i) => (
