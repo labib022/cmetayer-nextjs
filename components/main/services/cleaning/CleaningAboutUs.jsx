@@ -1,8 +1,7 @@
 "use client";
 
-// ✅ assets/ import বাদ — public/ folder এর সরাসরি path
 import { MdCheckCircle } from "react-icons/md";
-// ✅ react-router-dom → next/link
+
 import Link from "next/link";
 
 const movingImg = "/images/hero-img-4.png";

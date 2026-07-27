@@ -1,9 +1,8 @@
 "use client";
 
-// ✅ redux path fix: redux/ → lib/redux/
 import { useGetServicePageQuery } from "../../../../lib/redux/features/cms/cmsApi";
 
-// ✅ assets/ import বাদ — public/ folder এর সরাসরি path
+
 const fallbackImgs = [
   "/images/service-img-1.png",
   "/images/service-img-3.png",
